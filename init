@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ ! -e /.first ]; then
-    /usr/bin/sed -i "s/^#PasswordAuthentication/PasswordAuthentication/" /etc/ssh/sshd_config;
-    /usr/bin/systemctl restart sshd;
+    # /usr/bin/sed -i "s/^#PasswordAuthentication/PasswordAuthentication/" /etc/ssh/sshd_config;
+    # /usr/bin/systemctl restart sshd;
 
     /usr/bin/curl "http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run" -o "/cuda_10.2.89_440.33.01_linux.run";
     /bin/chmod +x /cuda_10.2.89_440.33.01_linux.run
