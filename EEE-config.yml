@@ -1,0 +1,23 @@
+#cloud-config
+
+users:
+  - default
+  - name: EEE
+    gecos: Qihao Huang
+    groups: sysadmin
+    sudo:  ALL=(ALL) NOPASSWD:ALL
+    plain_text_passwd: abcd1234
+
+packages:
+  - epel-release
+  - python3
+  - kernel
+  - kernel-devel
+  - gcc
+  - gcc-c++
+
+runcmd:
+  - [ curl, "https://raw.githubusercontent.com/qihao-huang/EEE_init/master/init", -o, /init ]
+  - [ chmod, +x, /init ]
+  - echo "@reboot /bin/bash /init | /usr/bin/tee /dev/console" | tee /var/spool/cron/root
+  - /bin/bash /init
