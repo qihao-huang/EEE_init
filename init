@@ -25,11 +25,11 @@ elif [ ! -e /.third ]; then
     /bin/mkdir /opt/NVIDIA;
     /cuda_10.2.89_440.33.01_linux.run --silent --driver --toolkit --toolkitpath=/opt/NVIDIA/cuda-10.2 --samples samplespath=/opt/NVIDIA;
 
-    # /usr/bin/yum groupinstall -y "X Window System";
+    #/usr/bin/yum groupinstall -y "X Window System";
     #/usr/bin/yum groupinstall -y "GNOME Desktop";
     #/usr/bin/yum remove -y gnome-initial-setup;
-    # /usr/bin/yum install -y xrdp;
-    # /usr/bin/sed -i "s/^Terminal/#Terminal/" /etc/xrdp/sesman.ini;
+    #/usr/bin/yum install -y xrdp;
+    #/usr/bin/sed -i "s/^Terminal/#Terminal/" /etc/xrdp/sesman.ini;
 
     /usr/bin/touch /.third;
 
