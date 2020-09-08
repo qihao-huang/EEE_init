@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ ! -e /.first ]; then
+    /usr/bin/sed -i "s/^#PasswordAuthentication/PasswordAuthentication/" /etc/ssh/sshd_config;
+    /usr/bin/systemctl restart sshd;
+
+    /usr/bin/curl "http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run" -o "/cuda_10.2.89_440.33.01_linux.run";
+    /bin/chmod +x /cuda_10.2.89_440.33.01_linux.run
+
+    /usr/bin/touch /.first;
+
+    /sbin/reboot;
+elif [ ! -e /.second ]; then
+    /usr/bin/tee /etc/modprobe.d/nouveau.conf <<!
+blacklist nouveau
+options nouveau modeset=0
+!
+
+    /usr/bin/dracut --force;
+
+    /usr/bin/touch /.second;
+
+    /sbin/reboot;
+elif [ ! -e /.third ]; then
+    /bin/mkdir /opt/NVIDIA;
+    /cuda_10.2.89_440.33.01_linux.run --silent --driver --toolkit --toolkitpath=/opt/NVIDIA/cuda-10.2 --samples samplespath=/opt/NVIDIA;
+
+    apt-get install -y build-essential
+    apt-get install -y yum
+    /usr/bin/yum groupinstall -y "X Window System";
+    #/usr/bin/yum groupinstall -y "GNOME Desktop";
+    #/usr/bin/yum remove -y gnome-initial-setup;
+    /usr/bin/yum install -y xrdp;
+    /usr/bin/sed -i "s/^Terminal/#Terminal/" /etc/xrdp/sesman.ini;
+
+    /usr/bin/touch /.third;
+
+    /sbin/reboot;
+else
+    /usr/bin/systemctl set-default graphical.target;
+
+    /usr/bin/rm /var/spool/cron/root /init /.first /.second;
+
+    /bin/echo "@reboot /sbin/iptables -I INPUT -p tcp -m tcp --dport 3389 -j ACCEPT;" | tee /var/spool/cron/root;
+
+    /sbin/reboot;
+fi;
