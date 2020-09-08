@@ -46,7 +46,7 @@
 
 ## 环境配置
 
-首次登陆
+### 首次登陆
 
 ```shell
 chmod 700 ~/.ssh
@@ -105,6 +105,8 @@ sudo ~/cuda_10.2.89_440.33.01_linux.run --silent --driver --toolkit --toolkitpat
 
 # 在 ~/.bashrc 中添加
 export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
 # 此时 nvcc 命令可以调用
 # nvidia-smi 命令也可以显示 GPU 信息
 
@@ -112,6 +114,86 @@ systemctl set-default graphical.target
 
 # cuDNN加速 根据自己的需求安装
 # anaconda 根据自己的需求安装
+```
+
+### 查看设备
+
+```shell
+# 查看 硬盘空间
+df -hl
+
+# 查看 CPU
+cat /proc/cpuinfo
+
+# 查看 内存
+free -m
+```
+
+### cuDNN
+
+```shell
+# 从 Nvidia 下载 CUDA 对应版本的 cuDNN
+tar -zxvf cudnn-10.2-linux-x64-v8.0.3.33.tgz
+# sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+sudo cp cuda/include/* /usr/local/cuda/include
+
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
+cd /usr/local/cuda/lib64/
+
+ls -lha libcudnn*
+
+# 创建软链接
+sudo rm -rf libcudnn.so libcudnn.so.8
+sudo ln -s libcudnn.so.8.0.3 libcudnn.so.8
+sudo ln -s libcudnn.so.8 libcudnn.so
+
+sudo rm -rf libcudnn_adv_infer.so libcudnn_adv_infer.so.8
+sudo ln -s libcudnn_adv_infer.so.8.0.3 libcudnn_adv_infer.so.8
+sudo ln -s libcudnn_adv_infer.so.8 libcudnn_adv_infer.so
+
+sudo rm -rf libcudnn_adv_train.so libcudnn_adv_train.so.8
+sudo ln -s libcudnn_adv_train.so.8.0.3 libcudnn_adv_train.so.8
+sudo ln -s libcudnn_adv_train.so.8 libcudnn_adv_train.so
+
+sudo rm -rf libcudnn_cnn_infer.so libcudnn_cnn_infer.so.8
+sudo ln -s libcudnn_cnn_infer.so.8.0.3 libcudnn_cnn_infer.so.8
+sudo ln -s libcudnn_cnn_infer.so.8 libcudnn_cnn_infer.so
+
+sudo rm -rf libcudnn_cnn_train.so libcudnn_cnn_train.so.8
+sudo ln -s libcudnn_cnn_train.so.8.0.3 libcudnn_cnn_train.so.8
+sudo ln -s libcudnn_cnn_train.so.8 libcudnn_cnn_train.so
+
+sudo rm -rf libcudnn_ops_infer.so libcudnn_ops_infer.so.8
+sudo ln -s libcudnn_ops_infer.so.8.0.3 libcudnn_ops_infer.so.8
+sudo ln -s libcudnn_ops_infer.so.8 libcudnn_ops_infer.so
+
+sudo rm -rf libcudnn_ops_train.so libcudnn_ops_train.so.8
+sudo ln -s libcudnn_ops_train.so.8.0.3 libcudnn_ops_train.so.8
+sudo ln -s libcudnn_ops_train.so.8 libcudnn_ops_train.so
+
+ls -lha libcudnn*
+sudo ldconfig
+
+# 从 Nvidia 下载下面三个文件，和 cuDNN 文件一起下载
+sudo dpkg -i libcudnn8_8.0.3.33-1+cuda10.2_amd64.deb
+sudo dpkg -i libcudnn8-dev_8.0.3.33-1+cuda10.2_amd64.deb
+sudo dpkg -i libcudnn8-samples_8.0.3.33-1+cuda10.2_amd64.deb
+
+# 测试 cuDNN 安装
+cp -r /usr/src/cudnn_samples_v8/ $HOME
+cd ~/cudnn_samples_v8/mnistCUDNN
+./mnistCUDNN
+# 显示 Test passed 即成功
+```
+
+### Anaconda
+
+```shell
+# ./Anaconda3-2020.07-Linux-x86_64.sh
+# 常规安装步骤，并选择 conda_init 为 yes
+# 在 ~/.bashrc 中添加
+export PATH=/home/ubuntu/anaconda3/bin:$PATH
 ```
 
 **NOTE**: 最后在 openstack 管理界面重启一下实例，重新登陆后一切正常。
