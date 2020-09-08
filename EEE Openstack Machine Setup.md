@@ -183,6 +183,7 @@ sudo dpkg -i libcudnn8-samples_8.0.3.33-1+cuda10.2_amd64.deb
 # 测试 cuDNN 安装
 cp -r /usr/src/cudnn_samples_v8/ $HOME
 cd ~/cudnn_samples_v8/mnistCUDNN
+make clean && make
 ./mnistCUDNN
 # 显示 Test passed 即成功
 ```
