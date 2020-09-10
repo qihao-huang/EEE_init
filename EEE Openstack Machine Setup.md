@@ -63,6 +63,10 @@ sudo su
 sudo passwd ubuntu
 # 设置机器密码，注意此时 ubuntu 是 admin 权限
 exit
+
+# 之后再次登陆，输入 IP 和 密码即可，不再需要 private_key
+# 注意保管好 private_key。public_key 可以在 openstack 页面查看
+ssh ubuntu@192.168.xxx.xxx
 ```
 
 ### 开启 ssh 密码登陆
