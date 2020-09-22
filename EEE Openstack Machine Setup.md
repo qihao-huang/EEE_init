@@ -63,10 +63,6 @@ sudo su
 sudo passwd ubuntu
 # 设置机器密码，注意此时 ubuntu 是 admin 权限
 exit
-
-# 之后再次登陆，输入 IP 和 密码即可，不再需要 private_key
-# 注意保管好 private_key。public_key 可以在 openstack 页面查看
-ssh ubuntu@192.168.xxx.xxx
 ```
 
 ### 开启 ssh 密码登陆
@@ -80,7 +76,8 @@ sudo vim /etc/ssh/sshd_config
 # 退出 vim 后
 systemctl restart sshd
 
-# 可以本地测试一下
+# 之后再次登陆，输入 IP 和 密码即可，不再需要 private_key
+# 注意保管好 private_key。public_key 可以在 openstack 页面查看
 ssh ubuntu@192.168.xxx.xxx
 ```
 
@@ -115,9 +112,6 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 # nvidia-smi 命令也可以显示 GPU 信息
 
 systemctl set-default graphical.target
-
-# cuDNN加速 根据自己的需求安装
-# anaconda 根据自己的需求安装
 ```
 
 ### 查看设备
@@ -195,8 +189,7 @@ make clean && make
 ### Anaconda
 
 ```shell
-# ./Anaconda3-2020.07-Linux-x86_64.sh
-# 常规安装步骤，并选择 conda_init 为 yes
+./Anaconda3-2020.07-Linux-x86_64.sh
 # 在 ~/.bashrc 中添加
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
 ```
